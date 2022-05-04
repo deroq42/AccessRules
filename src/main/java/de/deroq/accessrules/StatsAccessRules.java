@@ -28,7 +28,7 @@ public class StatsAccessRules extends JavaPlugin  {
     }
 
     private void makeInstances() {
-        this.databaseManager = new DatabaseManager();
+        this.databaseManager = new DatabaseManager(this);
         this.statsManager = new StatsManager(this);
     }
 
