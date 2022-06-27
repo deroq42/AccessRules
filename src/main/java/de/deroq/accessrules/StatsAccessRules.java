@@ -1,7 +1,7 @@
 package de.deroq.accessrules;
 
 import de.deroq.accessrules.commands.StatsCommand;
-import de.deroq.accessrules.database.DatabaseManager;
+import de.deroq.accessrules.database.StatsAccessRulesDatabase;
 import de.deroq.accessrules.listeners.PlayerJoinListener;
 import de.deroq.accessrules.managers.StatsManager;
 import org.bukkit.Bukkit;
@@ -10,29 +10,33 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class StatsAccessRules extends JavaPlugin  {
 
-    private DatabaseManager databaseManager;
+    private StatsAccessRulesDatabase statsAccessRulesDatabase;
     private StatsManager statsManager;
 
     @Override
     public void onEnable() {
-        makeInstances();
-        registerEvents();
+        initDatabase();
+        initManagers();
+        registerListeners();
         registerCommands();
 
-        getLogger().info("Plugin has been enabled.");
+        getLogger().info("StatsAccessRules has been enabled.");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("Plugin has been disabled.");
+        getLogger().info("StatsAccessRules has been disabled.");
     }
 
-    private void makeInstances() {
-        this.databaseManager = new DatabaseManager(this);
+    private void initDatabase() {
+        this.statsAccessRulesDatabase = new StatsAccessRulesDatabase(this);
+    }
+
+    private void initManagers() {
         this.statsManager = new StatsManager(this);
     }
 
-    private void registerEvents() {
+    private void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
     }
 
@@ -40,8 +44,8 @@ public class StatsAccessRules extends JavaPlugin  {
         ((CraftServer) Bukkit.getServer()).getCommandMap().register("stats", new StatsCommand("stats", this));
     }
 
-    public DatabaseManager getDatabaseManager() {
-        return databaseManager;
+    public StatsAccessRulesDatabase getStatsAccessRulesDatabase() {
+        return statsAccessRulesDatabase;
     }
 
     public StatsManager getStatsManager() {

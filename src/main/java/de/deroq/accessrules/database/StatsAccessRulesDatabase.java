@@ -7,14 +7,14 @@ import com.mongodb.client.MongoDatabase;
 import de.deroq.accessrules.StatsAccessRules;
 import org.bson.Document;
 
-public class DatabaseManager {
+public class StatsAccessRulesDatabase {
 
     private final StatsAccessRules statsAccessRules;
     private MongoClient mongoClient;
     private MongoDatabase mongoDatabase;
     private MongoCollection<Document> statsCollection;
 
-    public DatabaseManager(StatsAccessRules statsAccessRules) {
+    public StatsAccessRulesDatabase(StatsAccessRules statsAccessRules) {
         this.statsAccessRules = statsAccessRules;
         connect();
     }

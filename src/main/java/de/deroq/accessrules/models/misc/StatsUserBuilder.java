@@ -1,4 +1,6 @@
-package de.deroq.accessrules.models;
+package de.deroq.accessrules.models.misc;
+
+import de.deroq.accessrules.models.StatsUser;
 
 public class StatsUserBuilder {
 

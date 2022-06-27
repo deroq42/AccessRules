@@ -3,11 +3,12 @@ package de.deroq.accessrules.managers;
 import com.google.gson.Gson;
 import com.mongodb.CursorType;
 import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
 import de.deroq.accessrules.StatsAccessRules;
 import de.deroq.accessrules.models.StatsUser;
-import de.deroq.accessrules.models.StatsUserBuilder;
+import de.deroq.accessrules.models.misc.StatsUserBuilder;
 import de.deroq.accessrules.utils.Constants;
 import org.bson.Document;
 
@@ -17,32 +18,33 @@ import java.util.concurrent.CompletableFuture;
 public class StatsManager {
 
     private final StatsAccessRules statsAccessRules;
+    private final MongoCollection<Document> collection;
 
     public StatsManager(StatsAccessRules statsAccessRules) {
         this.statsAccessRules = statsAccessRules;
+        this.collection = statsAccessRules.getStatsAccessRulesDatabase().getStatsCollection();
     }
 
     public void createStatsUser(UUID uuid, String name) {
         CompletableFuture.runAsync(() -> {
-            Document document = statsAccessRules.getDatabaseManager().getStatsCollection().find(Filters.eq("uuid", uuid.toString())).first();
-            if (document != null) {
-                return;
+            Document document = collection.find(Filters.eq("uuid", uuid.toString())).first();
+            if (document == null) {
+                StatsUser statsUser = new StatsUserBuilder()
+                        .setUuid(uuid.toString())
+                        .setName(name)
+                        .build();
+
+                document = new Gson().fromJson(new Gson().toJson(statsUser), Document.class);
+                collection.insertOne(document);
             }
-
-            StatsUser statsUser = new StatsUserBuilder()
-                    .setUuid(uuid.toString())
-                    .setName(name)
-                    .build();
-
-            document = new Gson().fromJson(new Gson().toJson(statsUser), Document.class);
-            statsAccessRules.getDatabaseManager().getStatsCollection().insertOne(document);
         }, Constants.EXECUTOR_SERVICE);
     }
 
     public CompletableFuture<StatsUser> getAsyncStatsUserByName(String name, StatsUser.AccessRule... accessRules) {
         CompletableFuture<StatsUser> future = new CompletableFuture<>();
+
         CompletableFuture.runAsync(() -> {
-            FindIterable<Document> cursor = statsAccessRules.getDatabaseManager().getStatsCollection().find(Filters.eq("name", name));
+            FindIterable<Document> cursor = collection.find(Filters.eq("name", name));
 
             cursor.cursorType(CursorType.NonTailable);
             if (!StatsUser.AccessRule.isAll(accessRules)) {
