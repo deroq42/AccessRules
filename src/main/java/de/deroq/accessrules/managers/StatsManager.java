@@ -16,15 +16,18 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class StatsManager {
-
-    private final StatsAccessRules statsAccessRules;
     private final MongoCollection<Document> collection;
 
     public StatsManager(StatsAccessRules statsAccessRules) {
-        this.statsAccessRules = statsAccessRules;
         this.collection = statsAccessRules.getStatsAccessRulesDatabase().getStatsCollection();
     }
 
+    /**
+     * Inserts a StatsUser document into the database.
+     *
+     * @param uuid The uuid of the user.
+     * @param name The name of the user.
+     */
     public void createStatsUser(UUID uuid, String name) {
         CompletableFuture.runAsync(() -> {
             Document document = collection.find(Filters.eq("uuid", uuid.toString())).first();
@@ -40,14 +43,21 @@ public class StatsManager {
         }, Constants.EXECUTOR_SERVICE);
     }
 
-    public CompletableFuture<StatsUser> getAsyncStatsUserByName(String name, StatsUser.AccessRule... accessRules) {
+    /**
+     * @param name The name of the user.
+     * @param accessRules The AccessRules to select the necessary data.
+     * @return a Future with a StatsUser.
+     */
+    public CompletableFuture<StatsUser> getStatsUser(String name, StatsUser.AccessRule... accessRules) {
         CompletableFuture<StatsUser> future = new CompletableFuture<>();
 
         CompletableFuture.runAsync(() -> {
             FindIterable<Document> cursor = collection.find(Filters.eq("name", name));
 
             cursor.cursorType(CursorType.NonTailable);
+            /* If we do not want all the data. */
             if (!StatsUser.AccessRule.isAll(accessRules)) {
+                /* Will only select the necessary data, in our case the accessRules. */
                 cursor.projection(Projections.include(StatsUser.AccessRule.toStringList(accessRules)));
             }
 

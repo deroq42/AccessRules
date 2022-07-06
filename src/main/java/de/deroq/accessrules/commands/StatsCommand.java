@@ -23,32 +23,32 @@ public class StatsCommand extends Command {
         Player player = (Player) commandSender;
 
         if(args[0].equalsIgnoreCase("getKills")) {
-            statsAccessRules.getStatsManager().getAsyncStatsUserByName(player.getName(), StatsUser.AccessRule.KILLS).thenAcceptAsync(statsUserObject -> {
-                player.sendMessage("kills: " + statsUserObject.getKills());
+            statsAccessRules.getStatsManager().getStatsUser(player.getName(), StatsUser.AccessRule.KILLS).thenAcceptAsync(statsUser -> {
+                player.sendMessage("kills: " + statsUser.getKills());
             });
 
             return false;
         }
 
         if(args[0].equalsIgnoreCase("getDeaths")) {
-            statsAccessRules.getStatsManager().getAsyncStatsUserByName(player.getName(), StatsUser.AccessRule.DEATHS).thenAcceptAsync(statsUserObject -> {
-                player.sendMessage("deaths: " + statsUserObject.getDeaths());
+            statsAccessRules.getStatsManager().getStatsUser(player.getName(), StatsUser.AccessRule.DEATHS).thenAcceptAsync(statsUser -> {
+                player.sendMessage("deaths: " + statsUser.getDeaths());
             });
 
             return false;
         }
 
         if(args[0].equalsIgnoreCase("getPoints")) {
-            statsAccessRules.getStatsManager().getAsyncStatsUserByName(player.getName(), StatsUser.AccessRule.POINTS).thenAcceptAsync(statsUserObject -> {
-                player.sendMessage("points: " + statsUserObject.getPoints());
+            statsAccessRules.getStatsManager().getStatsUser(player.getName(), StatsUser.AccessRule.POINTS).thenAcceptAsync(statsUser -> {
+                player.sendMessage("points: " + statsUser.getPoints());
             });
 
             return false;
         }
 
         if(args[0].equalsIgnoreCase("getAll")) {
-            statsAccessRules.getStatsManager().getAsyncStatsUserByName(player.getName(), StatsUser.AccessRule.ALL).thenAcceptAsync(statsUserObject -> {
-                player.sendMessage(statsUserObject.toString());
+            statsAccessRules.getStatsManager().getStatsUser(player.getName(), StatsUser.AccessRule.ALL).thenAcceptAsync(statsUser -> {
+                player.sendMessage(statsUser.toString());
             });
 
             return false;
