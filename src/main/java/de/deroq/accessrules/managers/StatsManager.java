@@ -8,11 +8,9 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
 import de.deroq.accessrules.StatsAccessRules;
 import de.deroq.accessrules.models.StatsUser;
-import de.deroq.accessrules.models.misc.StatsUserBuilder;
 import de.deroq.accessrules.utils.Constants;
 import org.bson.Document;
 
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class StatsManager {
@@ -28,14 +26,11 @@ public class StatsManager {
      * @param uuid The uuid of the user.
      * @param name The name of the user.
      */
-    public void createStatsUser(UUID uuid, String name) {
+    public void createStatsUser(String uuid, String name) {
         CompletableFuture.runAsync(() -> {
-            Document document = collection.find(Filters.eq("uuid", uuid.toString())).first();
+            Document document = collection.find(Filters.eq("uuid", uuid)).first();
             if (document == null) {
-                StatsUser statsUser = new StatsUserBuilder()
-                        .setUuid(uuid.toString())
-                        .setName(name)
-                        .build();
+                StatsUser statsUser = StatsUser.create(uuid, name);
 
                 document = new Gson().fromJson(new Gson().toJson(statsUser), Document.class);
                 collection.insertOne(document);

@@ -2,26 +2,23 @@ package de.deroq.accessrules.models;
 
 public class StatsUser {
 
-    private String uuid;
-    private String name;
+    private final String uuid;
+    private final String name;
     private int points;
     private int kills;
     private int deaths;
+
+    private StatsUser(String uuid, String name) {
+        this.uuid = uuid;
+        this.name = name;
+    }
 
     public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getPoints() {
@@ -46,6 +43,10 @@ public class StatsUser {
 
     public void setDeaths(int deaths) {
         this.deaths = deaths;
+    }
+
+    public static StatsUser create(String uuid, String name) {
+        return new StatsUser(uuid, name);
     }
 
     public enum AccessRule {

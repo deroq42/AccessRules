@@ -17,6 +17,6 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        statsAccessRules.getStatsManager().createStatsUser(player.getUniqueId(), player.getName());
+        statsAccessRules.getStatsManager().createStatsUser(player.getUniqueId().toString(), player.getName());
     }
 }
