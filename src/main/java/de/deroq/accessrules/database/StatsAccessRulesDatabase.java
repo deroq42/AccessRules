@@ -7,6 +7,11 @@ import com.mongodb.client.MongoDatabase;
 import de.deroq.accessrules.StatsAccessRules;
 import org.bson.Document;
 
+/**
+ * @author deroq
+ * @since 01.05.2022
+ */
+
 public class StatsAccessRulesDatabase {
 
     private final StatsAccessRules statsAccessRules;

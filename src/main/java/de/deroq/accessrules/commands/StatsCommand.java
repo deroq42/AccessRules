@@ -6,6 +6,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * @author deroq
+ * @since 01.05.2022
+ */
+
 public class StatsCommand extends Command {
 
     private final StatsAccessRules statsAccessRules;

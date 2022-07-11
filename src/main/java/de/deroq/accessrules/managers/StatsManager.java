@@ -13,7 +13,13 @@ import org.bson.Document;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * @author deroq
+ * @since 01.05.2022
+ */
+
 public class StatsManager {
+
     private final MongoCollection<Document> collection;
 
     public StatsManager(StatsAccessRules statsAccessRules) {

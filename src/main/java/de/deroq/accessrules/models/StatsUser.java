@@ -1,5 +1,10 @@
 package de.deroq.accessrules.models;
 
+/**
+ * @author deroq
+ * @since 01.05.2022
+ */
+
 public class StatsUser {
 
     private final String uuid;

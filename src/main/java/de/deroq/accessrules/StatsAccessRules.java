@@ -8,6 +8,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * @author deroq
+ * @since 01.05.2022
+ */
+
 public class StatsAccessRules extends JavaPlugin  {
 
     private StatsAccessRulesDatabase statsAccessRulesDatabase;

@@ -6,6 +6,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+/**
+ * @author deroq
+ * @since 01.05.2022
+ */
+
 public class PlayerJoinListener implements Listener {
 
     private final StatsAccessRules statsAccessRules;
